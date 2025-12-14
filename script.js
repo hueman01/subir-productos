@@ -13,6 +13,7 @@ const infoForm = document.getElementById("info-form");
 const infoStatus = document.getElementById("info-status");
 const infoLoader = document.getElementById("info-loader");
 const infoSubmitBtn = document.getElementById("info-submit");
+const infoClearBtn = document.getElementById("info-clear");
 
 let products = [];
 let editingId = null;
@@ -277,11 +278,16 @@ infoForm?.addEventListener("submit", async (e) => {
       throw new Error(errorData?.message || "No se pudo guardar la informacion de la tienda");
     }
     showInlineStatus(infoStatus, "Informacion guardada");
+    await fetchSiteInfo();
   } catch (err) {
     showInlineStatus(infoStatus, err.message, "error");
   } finally {
     if (infoSubmitBtn) infoSubmitBtn.disabled = false;
   }
+});
+
+infoClearBtn?.addEventListener("click", () => {
+  infoForm?.reset();
 });
 
 fetchProducts();
