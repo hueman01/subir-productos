@@ -9,9 +9,24 @@ const loader = document.getElementById("loader");
 const productsGrid = document.getElementById("products-grid");
 const emptyState = document.getElementById("empty-state");
 const toast = document.getElementById("toast");
+const infoForm = document.getElementById("info-form");
+const infoStatus = document.getElementById("info-status");
+const infoLoader = document.getElementById("info-loader");
+const infoSubmitBtn = document.getElementById("info-submit");
 
 let products = [];
 let editingId = null;
+
+const defaultSiteInfo = {
+  centroAyuda: "",
+  preguntasFrecuentes: "",
+  terminosCondiciones: "",
+  quienesSomos: "",
+  beneficiosComprar: "",
+  privacidadSeguridad: "",
+  consejosTecnologicos: "",
+  puntosVerdes: "",
+};
 
 const showLoader = (show) => {
   loader.hidden = !show;
@@ -28,6 +43,18 @@ const showToast = (message) => {
   toast.textContent = message;
   toast.hidden = false;
   setTimeout(() => (toast.hidden = true), 2200);
+};
+
+const showInlineStatus = (target, message, type = "success") => {
+  if (!target) return;
+  target.textContent = message;
+  target.hidden = false;
+  target.className = `status status--${type}`;
+  setTimeout(() => (target.hidden = true), 2500);
+};
+
+const toggleInfoLoader = (show) => {
+  if (infoLoader) infoLoader.hidden = !show;
 };
 
 const resetForm = () => {
@@ -179,7 +206,7 @@ productsGrid.addEventListener("click", async (e) => {
   }
 
   if (actionBtn.dataset.action === "delete") {
-    if (!confirm("¿Eliminar este producto?")) return;
+    if (!confirm("Eliminar este producto?")) return;
     try {
       const res = await fetch(`${API_BASE}/products/${id}`, { method: "DELETE" });
       if (!res.ok) {
@@ -195,4 +222,67 @@ productsGrid.addEventListener("click", async (e) => {
   }
 });
 
+const fillSiteInfoForm = (payload = {}) => {
+  if (!infoForm) return;
+  const data = { ...defaultSiteInfo, ...payload };
+  infoForm.centroAyuda.value = data.centroAyuda || "";
+  infoForm.preguntasFrecuentes.value = data.preguntasFrecuentes || "";
+  infoForm.terminosCondiciones.value = data.terminosCondiciones || "";
+  infoForm.quienesSomos.value = data.quienesSomos || "";
+  infoForm.beneficiosComprar.value = data.beneficiosComprar || "";
+  infoForm.privacidadSeguridad.value = data.privacidadSeguridad || "";
+  infoForm.consejosTecnologicos.value = data.consejosTecnologicos || "";
+  infoForm.puntosVerdes.value = data.puntosVerdes || "";
+};
+
+const fetchSiteInfo = async () => {
+  if (!infoForm) return;
+  try {
+    toggleInfoLoader(true);
+    const res = await fetch(`${API_BASE}/info`);
+    if (!res.ok) throw new Error("No se pudo cargar la informacion de la tienda");
+    const data = await res.json();
+    fillSiteInfoForm(data || {});
+  } catch (err) {
+    showInlineStatus(infoStatus, err.message, "error");
+  } finally {
+    toggleInfoLoader(false);
+  }
+};
+
+infoForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (infoSubmitBtn) infoSubmitBtn.disabled = true;
+
+  const formData = new FormData(infoForm);
+  const payload = {
+    centroAyuda: formData.get("centroAyuda")?.toString().trim() || "",
+    preguntasFrecuentes: formData.get("preguntasFrecuentes")?.toString().trim() || "",
+    terminosCondiciones: formData.get("terminosCondiciones")?.toString().trim() || "",
+    quienesSomos: formData.get("quienesSomos")?.toString().trim() || "",
+    beneficiosComprar: formData.get("beneficiosComprar")?.toString().trim() || "",
+    privacidadSeguridad: formData.get("privacidadSeguridad")?.toString().trim() || "",
+    consejosTecnologicos: formData.get("consejosTecnologicos")?.toString().trim() || "",
+    puntosVerdes: formData.get("puntosVerdes")?.toString().trim() || "",
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/info`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData?.message || "No se pudo guardar la informacion de la tienda");
+    }
+    showInlineStatus(infoStatus, "Informacion guardada");
+  } catch (err) {
+    showInlineStatus(infoStatus, err.message, "error");
+  } finally {
+    if (infoSubmitBtn) infoSubmitBtn.disabled = false;
+  }
+});
+
 fetchProducts();
+fetchSiteInfo();

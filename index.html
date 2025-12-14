@@ -21,37 +21,6 @@
     </header>
 
     <main class="container main">
-      <section class="card form-card">
-        <h2 id="form-title" class="section-title">Agregar Producto</h2>
-        <form id="product-form" class="form">
-          <div class="form__group">
-            <label for="nombre">Nombre</label>
-            <input id="nombre" name="nombre" placeholder="Ej: Audifonos Bluetooth" required />
-          </div>
-          <div class="form__group">
-            <label for="precio">Precio</label>
-            <input id="precio" name="precio" type="number" step="0.01" placeholder="29.99" required />
-          </div>
-          <div class="form__group">
-            <label for="descripcion">Descripcion</label>
-            <textarea id="descripcion" name="descripcion" placeholder="Describe el producto..." required></textarea>
-          </div>
-          <div class="form__group">
-            <label for="imagen">URL de la imagen</label>
-            <input id="imagen" name="imagen" type="url" placeholder="https://ejemplo.com/imagen.jpg" required />
-          </div>
-          <div class="form__group">
-            <label for="existencias">Existencias</label>
-            <input id="existencias" name="existencias" type="number" placeholder="50" required />
-          </div>
-          <div class="form__actions">
-            <button type="submit" class="btn btn--primary" id="submit-btn">Guardar Producto</button>
-            <button type="button" class="btn btn--ghost" id="cancel-edit" hidden>Cancelar edicion</button>
-          </div>
-        </form>
-        <div id="status-message" class="status" hidden></div>
-      </section>
-
       <section class="card">
         <div class="section-head">
           <h2 class="section-title">Productos</h2>
@@ -59,6 +28,84 @@
         </div>
         <div id="empty-state" class="empty-state" hidden>No hay productos disponibles. Agrega el primero!</div>
         <div id="products-grid" class="grid"></div>
+      </section>
+
+      <section class="stacked-column">
+        <section class="card form-card">
+          <h2 id="form-title" class="section-title">Agregar Producto</h2>
+          <form id="product-form" class="form">
+            <div class="form__group">
+              <label for="nombre">Nombre</label>
+              <input id="nombre" name="nombre" placeholder="Ej: Audifonos Bluetooth" required />
+            </div>
+            <div class="form__group">
+              <label for="precio">Precio</label>
+              <input id="precio" name="precio" type="number" step="0.01" placeholder="29.99" required />
+            </div>
+            <div class="form__group">
+              <label for="descripcion">Descripcion</label>
+              <textarea id="descripcion" name="descripcion" placeholder="Describe el producto..." required></textarea>
+            </div>
+            <div class="form__group">
+              <label for="imagen">URL de la imagen</label>
+              <input id="imagen" name="imagen" type="url" placeholder="https://ejemplo.com/imagen.jpg" required />
+            </div>
+            <div class="form__group">
+              <label for="existencias">Existencias</label>
+              <input id="existencias" name="existencias" type="number" placeholder="50" required />
+            </div>
+            <div class="form__actions">
+              <button type="submit" class="btn btn--primary" id="submit-btn">Guardar Producto</button>
+              <button type="button" class="btn btn--ghost" id="cancel-edit" hidden>Cancelar edicion</button>
+            </div>
+          </form>
+          <div id="status-message" class="status" hidden></div>
+        </section>
+
+        <section class="card info-card">
+          <div class="section-head">
+            <h2 class="section-title">Informacion de la tienda</h2>
+            <div id="info-loader" class="loader" hidden></div>
+          </div>
+          <form id="info-form" class="form">
+            <div class="form__group">
+              <label for="centroAyuda">Centro de ayuda</label>
+              <textarea id="centroAyuda" name="centroAyuda" placeholder="Agrega detalles del centro de ayuda"></textarea>
+            </div>
+            <div class="form__group">
+              <label for="preguntasFrecuentes">Preguntas frecuentes</label>
+              <textarea id="preguntasFrecuentes" name="preguntasFrecuentes" placeholder="Responde las dudas mas comunes"></textarea>
+            </div>
+            <div class="form__group">
+              <label for="terminosCondiciones">Terminos y condiciones</label>
+              <textarea id="terminosCondiciones" name="terminosCondiciones" placeholder="Condiciones de compra y servicio"></textarea>
+            </div>
+            <div class="form__group">
+              <label for="quienesSomos">Quienes somos</label>
+              <textarea id="quienesSomos" name="quienesSomos" placeholder="Breve descripcion de la tienda"></textarea>
+            </div>
+            <div class="form__group">
+              <label for="beneficiosComprar">Beneficios de comprar</label>
+              <textarea id="beneficiosComprar" name="beneficiosComprar" placeholder="Ventajas y garantias para el cliente"></textarea>
+            </div>
+            <div class="form__group">
+              <label for="privacidadSeguridad">Privacidad y seguridad</label>
+              <textarea id="privacidadSeguridad" name="privacidadSeguridad" placeholder="Politicas de datos y seguridad"></textarea>
+            </div>
+            <div class="form__group">
+              <label for="consejosTecnologicos">Consejos tecnologicos</label>
+              <textarea id="consejosTecnologicos" name="consejosTecnologicos" placeholder="Guia o tips para productos tecnologicos"></textarea>
+            </div>
+            <div class="form__group">
+              <label for="puntosVerdes">Puntos verdes</label>
+              <textarea id="puntosVerdes" name="puntosVerdes" placeholder="Iniciativas eco o reciclaje"></textarea>
+            </div>
+            <div class="form__actions">
+              <button type="submit" class="btn btn--primary" id="info-submit">Guardar informacion</button>
+            </div>
+          </form>
+          <div id="info-status" class="status" hidden></div>
+        </section>
       </section>
     </main>
 
